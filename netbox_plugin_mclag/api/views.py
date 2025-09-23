@@ -1,17 +1,21 @@
+from dcim.models import Interface
 from netbox.api.viewsets import NetBoxModelViewSet, NetBoxReadOnlyModelViewSet
 
-from .. import models
-from .serializers import McLagSerializer, McDomainSerializer, McInterfaceSerializer
-from ..filtersets import McInterfaceFilterSet
-from dcim.models import Interface
+from netbox_plugin_mclag import models
+from netbox_plugin_mclag.api.serializers import McLagSerializer, McDomainSerializer, McInterfaceSerializer
+from netbox_plugin_mclag.filtersets import McInterfaceFilterSet
 
 class McDomainViewSet(NetBoxModelViewSet):
     queryset = models.McDomain.objects.prefetch_related('devices', 'tags')
     serializer_class = McDomainSerializer
+    ordering_fields = ['name', 'domain_id']
+    ordering = ['name']
 
 class McLagViewSet(NetBoxModelViewSet):
     queryset = models.McLag.objects.prefetch_related('mc_domain', 'tags')
     serializer_class = McLagSerializer
+    ordering_fields = ['lag_id', 'name', 'type']
+    ordering = ['lag_id', 'name']
 
 class McInterfaceViewSet(NetBoxReadOnlyModelViewSet):
     # Force disabling of brief mode that is implemented in the BriefModeMixin.
@@ -26,3 +30,5 @@ class McInterfaceViewSet(NetBoxReadOnlyModelViewSet):
     queryset = Interface.objects.filter(type='lag').prefetch_related('device')
     serializer_class = McInterfaceSerializer
     filterset_class = McInterfaceFilterSet
+    ordering_fields = ['name', 'device__name']
+    ordering = ['name']

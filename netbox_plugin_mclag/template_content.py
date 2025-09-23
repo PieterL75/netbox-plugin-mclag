@@ -1,6 +1,8 @@
-from netbox.plugins import PluginTemplateExtension
-from .models import McDomain, McLag
 from django.core.exceptions import MultipleObjectsReturned, ObjectDoesNotExist
+
+from netbox.plugins import PluginTemplateExtension
+
+from netbox_plugin_mclag.models import McDomain, McLag
 
 
 class McLagInterfaceExtensions(PluginTemplateExtension):

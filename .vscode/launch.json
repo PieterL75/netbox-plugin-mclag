@@ -1,0 +1,46 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Netbox runserver",
+            "type": "debugpy",
+            "request": "launch",
+            "python": "/opt/netbox/venv/bin/python3",
+            "program": "/opt/netbox/netbox/manage.py",
+            "args": [
+                "runserver",
+                "-v",
+                "3",
+                // "--noreload",
+                "--skip-checks",
+                "0.0.0.0:8001",
+            ],
+            "django": true,
+            "justMyCode": false,
+            "sudo": true,
+//            "preLaunchTask": "netbox_nbdebug",
+//            "postDebugTask": "netbox_start",
+        },
+        {
+            "name": "Netboxfork runserver",
+            "type": "debugpy",
+            "request": "launch",
+            "python": "/home/plambrecht/PieterL75/netbox_fork/venv/bin/python3",
+            "program": "/home/plambrecht/PieterL75/netbox_fork/netbox/manage.py",
+            "args": [
+                "runserver",
+                "-v",
+                "3",
+                // "--noreload",
+                "--skip-checks",
+                "0.0.0.0:8005",
+            ],
+            "django": true,
+            "justMyCode": false,
+            "sudo": true,
+//            "preLaunchTask": "netbox_nbdebug",
+//            "postDebugTask": "netbox_start",
+        }    ]

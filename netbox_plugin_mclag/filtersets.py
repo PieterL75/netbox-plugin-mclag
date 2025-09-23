@@ -1,7 +1,8 @@
-from netbox.filtersets import NetBoxModelFilterSet
-from dcim.models import Interface
-from .models import McDomain, McLag
 from django_filters import ModelMultipleChoiceFilter
+from dcim.models import Interface
+from netbox.filtersets import NetBoxModelFilterSet
+
+from netbox_plugin_mclag.models import McDomain, McLag
 
 class McInterfaceFilterSet(NetBoxModelFilterSet):
     mc_domain = ModelMultipleChoiceFilter(
