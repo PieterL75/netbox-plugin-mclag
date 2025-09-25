@@ -3,6 +3,7 @@ from django.db import models
 from django.urls import reverse
 
 from netbox.models import NetBoxModel
+from dcim.models import Interface
 
 from netbox_plugin_mclag.choices import LagTypeChoices
 
@@ -47,6 +48,11 @@ class McLag(NetBoxModel):
         return reverse('plugins:netbox_plugin_mclag:mclag', args=[self.pk])
     def get_type_color(self):
         return LagTypeChoices.colors.get(self.type)
+    def get_lag_interfaces(self):
+        return self.interfaces.all()
+    def get_physical_interfaces(self):
+        return Interface.objects.filter(lag__mc_lags=self)
+
     class Meta:
         verbose_name="Multi-Chassis Link Aggregation Group"
         verbose_name_plural="Multi-Chassis Link Aggregation Groups"

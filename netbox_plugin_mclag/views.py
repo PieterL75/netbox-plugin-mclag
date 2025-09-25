@@ -58,10 +58,10 @@ class McDomainBulkDeleteView(BulkDeleteView):
 class McLagView(ObjectView):
     queryset = McLag.objects.all()
     def get_extra_context(self, request, instance):
-        lag_interfaces_table = InterfaceTable(instance.interfaces.all())
+        lag_interfaces_table = InterfaceTable(instance.get_lag_interfaces())
         lag_interfaces_table.configure(request)
 
-        physical_interfaces_table = InterfaceTable(Interface.objects.filter(lag__mc_lags=instance))
+        physical_interfaces_table = InterfaceTable(instance.get_physical_interfaces())
         physical_interfaces_table.configure(request)
         return {
             'lag_interfaces_table': lag_interfaces_table,
