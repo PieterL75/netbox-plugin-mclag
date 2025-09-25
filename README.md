@@ -52,6 +52,7 @@ The following functionality is currently offered by this plugin:
   * The ability to view/create/update/delete *Multi-Chassis Link Aggregation Group* objects through the web UI and by API.
   * Button added to Device view to "Show MC Domain" if a device is associated with an MC Domain
   * Button added to Interface view to "Show MC-LAG" if an interface is associated with an MC-LAG
+  * Extra Column added in the Interface Table to see the related MC-LAG Domain and its Group
 
 ## Configuration template example
 
@@ -85,7 +86,8 @@ exit
 
 ## Supported versions
 
-This version of the `netbox-plugin-mclag` plugin has added compatibility for NetBox 4.3 and should have backwards compatibility with NetBox 4.2. It is not supported on older versions.
+Version 0.3 and newer of the `netbox-plugin-mclag` plugin have added compatibility for NetBox 4.3 and should have backwards compatibility with NetBox 4.2. It is not supported on older versions.
+
 The plugin has been developed for Python 3.12.3, but I expect it to work with any Python version supported by Netbox.
 
 ## Installation
@@ -137,6 +139,20 @@ PLUGINS_CONFIG = {
     }
 }
 ```
+
+The default list of 'LAG' interface types is limited. This can be extended using the FIELD_CHOICES in the configuration.py:
+See https://netbox.readthedocs.io/en/feature/configuration/data-validation/#field_choices
+
+```python
+FIELD_CHOICES = {
+    'netbox_plugin_mclag.McLag.type+': (
+        ('value', 'Display', 'color'),
+    )
+}
+```
+Remark: 
+ - Remove the + after 'netbox_plugin_mclag.McLag.type' to replace the default list, keep the + to add to the list.
+ - Make sure to have a comma after the last entry !
 
 ## Uninstallation
 
