@@ -7,7 +7,7 @@ class NetBoxMcLagConfig(PluginConfig):
     description = "Manage Multi-Chassis Link Aggregation Groups in Netbox (MC-LAG / MLAG / vPC / etc)"
     author = "Pieter Lambrecht"
     author_email = "pieter.lambrecht@gmail.com"
-    version = "0.3.0"
+    version = "0.3.1"
     base_url = "mclag"
 
 # based original code of pv2b: https://github.com/pv2b/netbox-plugin-mclag
