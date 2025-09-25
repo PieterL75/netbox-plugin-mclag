@@ -52,6 +52,9 @@ class McLag(NetBoxModel):
         return self.interfaces.all()
     def get_physical_interfaces(self):
         return Interface.objects.filter(lag__mc_lags=self)
+    def get_connected_endpoints(self):
+        return sum([interface.connected_endpoints for interface in Interface.objects.filter(lag__mc_lags=self)], [])
+
 
     class Meta:
         verbose_name="Multi-Chassis Link Aggregation Group"
