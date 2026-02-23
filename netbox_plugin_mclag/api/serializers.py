@@ -1,8 +1,9 @@
 from rest_framework import serializers
 
 from netbox.api.serializers import NetBoxModelSerializer, WritableNestedSerializer
+from netbox.api.fields import SerializedPKRelatedField
 from dcim.api.serializers import DeviceSerializer, InterfaceSerializer
-from dcim.models import Interface
+from dcim.models import Device, Interface
 
 from netbox_plugin_mclag.models import McLag, McDomain
 from netbox_plugin_mclag.util import get_interface_label
@@ -15,24 +16,22 @@ class NestedMcDomainSerializer(WritableNestedSerializer):
     url = serializers.HyperlinkedIdentityField(
         view_name='plugins-api:netbox_plugin_mclag-api:mcdomain-detail'
     )
-    devices = DeviceSerializer(nested=True, many=True)
     display = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = McDomain
-        fields = ('id', 'url', 'name', 'display', 'domain_id', 'devices')
+        fields = ('id', 'url', 'name', 'display', 'domain_id')
 
 
 class NestedMcLagSerializer(WritableNestedSerializer):
     url = serializers.HyperlinkedIdentityField(
         view_name='plugins-api:netbox_plugin_mclag-api:mclag-detail'
     )
-    interfaces = InterfaceSerializer(nested=True, many=True)
     display = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = McLag
-        fields = ('id', 'name', 'display', 'url', 'name', 'lag_id', 'type', 'interfaces')
+        fields = ('id', 'url', 'name', 'display', 'lag_id', 'type')
 
 #
 # Regular serializers
@@ -42,8 +41,14 @@ class McDomainSerializer(NetBoxModelSerializer):
     url = serializers.HyperlinkedIdentityField(
         view_name='plugins-api:netbox_plugin_mclag-api:mcdomain-detail'
     )
-    mc_lags = NestedMcLagSerializer(many=True)
-    devices = DeviceSerializer(nested=True, many=True)
+    mc_lags = NestedMcLagSerializer(many=True, read_only=True)
+    devices = SerializedPKRelatedField(
+        queryset=Device.objects.all(),
+        serializer=DeviceSerializer,
+        nested=True,
+        many=True,
+        required=False,
+    )
     display = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
@@ -59,7 +64,13 @@ class McLagSerializer(NetBoxModelSerializer):
         view_name='plugins-api:netbox_plugin_mclag-api:mclag-detail'
     )
     mc_domain = NestedMcDomainSerializer()
-    interfaces = InterfaceSerializer(nested=True, many=True)
+    interfaces = SerializedPKRelatedField(
+        queryset=Interface.objects.all(),
+        serializer=InterfaceSerializer,
+        nested=True,
+        many=True,
+        required=False,
+    )
     display = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
